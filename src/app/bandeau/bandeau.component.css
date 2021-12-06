@@ -1,0 +1,36 @@
+.alert {
+  position: fixed;
+  width: 100%;
+  left: 0px;
+  bottom:0px;
+  z-index: 9999;
+  padding: 10px;
+
+  font-family: 'Roboto', sans-serif;
+
+  background-color: rgba(80, 110, 170, 0.5);
+  color: white;
+  text-align: center;
+}
+
+.alert-success {
+  background-color: #00ff59;
+}
+
+.alert-error {
+  background-color: #ff0400;
+  color: black;
+}
+
+.alert-warning {
+  background-color:#FFD557;
+  color: black;
+}
+
+.alert-info {
+  background-color: teal;
+}
+
+.p {
+  text-align: center;
+}

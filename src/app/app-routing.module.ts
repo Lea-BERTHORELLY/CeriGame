@@ -1,7 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+import { AppComponent } from './app.component';
+import { BandeauComponent } from './bandeau/bandeau.component';
+import { LoginFormComponent } from './login-form/login-form.component';
+import { AccueilComponent } from './accueil/accueil.component';
+import { ProfilComponent} from './profil/profil.component';
+
+
+const routes: Routes = [
+  { path: '', pathMatch: 'full' , component: LoginFormComponent },
+  { path: 'login', component: LoginFormComponent },
+  { path: 'accueil', component: AccueilComponent },
+  { path: 'profile', component: ProfilComponent },
+  { path: '**', component: AccueilComponent }
+  
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
