@@ -107,20 +107,19 @@ app.post('/login', (request, response) => {
 
 app.post('/profile', (request, response) => {
 	//console.log('Don\'t mind me , I\'m a test ');
-	//console.log('date de naissance : '+request.session.date_de_naissance);
 	var humeur = request.body.humeur;
 	var image = request.body.image;
 	var mdp = request.body.mdp;
-	//console.log('mot de passe : '+mdp);
-	if(humeur!=null||humeur!='')
+	console.log('mot de passe : '+request.body.mdp);
+	if(humeur!=undefined)
 	{
 		sql_humeur = "UPDATE fredouil.users SET humeur = '"+ humeur +"' WHERE identifiant ='"+request.session.identifiant+"';";
 	}
-	if(image!=null||image!='')
+	if(image!=undefined)
 	{
 		sql_image = "UPDATE fredouil.users SET avatar = '"+ image +"' WHERE identifiant ='"+request.session.identifiant+"';";
 	}
-	if(mdp!=null||mdp!='')
+	if(mdp!=undefined)
 	{
 		sql_mdp = "UPDATE fredouil.users SET motpasse = '"+ sha1(mdp) +"' WHERE identifiant ='"+request.session.identifiant+"';";
 	}
@@ -132,7 +131,7 @@ app.post('/profile', (request, response) => {
 		} 
 		else
 		{
-			if(humeur!=null||humeur!=''){
+			if(humeur!=undefined){
 				client.query(sql_humeur, (err, result) => {
 					if(err)
 					{
@@ -149,7 +148,7 @@ app.post('/profile', (request, response) => {
 					response.send(responseData);
 				})
 			}
-			else if(image!=null||image!=''){
+			else if(image!=undefined){
 				client.query(sql_image, (err, result) => {
 					if(err)
 					{
@@ -166,7 +165,7 @@ app.post('/profile', (request, response) => {
 					response.send(responseData);
 				})
 			}
-			else if(mdp!=null||mdp!=''){
+			else if(mdp!=undefined){
 				client.query(sql_mdp, (err, result) => {
 					if(err)
 					{
@@ -187,6 +186,12 @@ app.post('/profile', (request, response) => {
 			client.release();
 		}
 	});
+});
+
+app.get('/profile',(request,response)=>{
+
+
+
 });
 
 

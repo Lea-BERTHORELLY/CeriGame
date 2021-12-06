@@ -30,17 +30,17 @@ export class ProfilComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.nom = JSON.parse(sessionStorage.getItem('user') || '{}').nom;
+   /* this.nom = JSON.parse(sessionStorage.getItem('user') || '{}').nom;
     this.prenom = JSON.parse(sessionStorage.getItem('user') || '{}').prenom;
     this.identifiant = JSON.parse(sessionStorage.getItem('user') || '{}').identifiant;
-    this.date_naissance=JSON.parse(sessionStorage.getItem('user') || '{}').date_de_naissance;
+    this.date_naissance=JSON.parse(sessionStorage.getItem('user') || '{}').date_de_naissance;*/
    
   }
 
   Modify(formProfile : any){
     this.profile.ModifyProfile(formProfile.form.value.humeur, formProfile.form.value.image,  formProfile.form.value.mdp).subscribe((data: any) => 
     {
-      if(formProfile.form.value.humeur!=null || formProfile.form.value.image!=null || formProfile.form.value.mdp!=null  ){
+      if((formProfile.form.value.humeur!=undefined) || (formProfile.form.value.image!=undefined) || (formProfile.form.value.mdp!=undefined)  ){
         this.bandeau.bandeauInfo = "Profil modifié ! ";
         this.router.navigate(['accueil']);
       }
