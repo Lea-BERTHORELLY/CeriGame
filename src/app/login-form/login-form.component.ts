@@ -36,14 +36,21 @@ export class LoginFormComponent implements OnInit {
       (data: any) => { 
         if(formConnex.form.value.username!=null && formConnex.form.value.password!=null){
           if(localStorage.getItem("date")){
+            //this.bandeau.bandeauInfo = "Bienvenue " + data.data.nom+" votre dernière connexion remonte au "+localStorage.getItem("date") + " à "+ localStorage.getItem("time");
+            
             this.bandeau.bandeauInfo = "Bienvenue " + formConnex.form.value.username+" votre dernière connexion remonte au "+localStorage.getItem("date") + " à "+ localStorage.getItem("time");
             localStorage.setItem("date",new Date().toDateString());
             localStorage.setItem("time",new Date().toTimeString());
+            localStorage.setItem("nom",data.data.nom);
+            localStorage.setItem("prenom",data.data.prenom);
+            //this.bandeau.bandeauInfo = "Bienvenue " + localStorage.getItem("nom")+" votre dernière connexion remonte au "+localStorage.getItem("date") + " à "+ localStorage.getItem("time");
           }            
           else{
             this.bandeau.bandeauInfo = "Bienvenue " + formConnex.form.value.username;
             localStorage.setItem("date",new Date().toDateString());
             localStorage.setItem("time",new Date().toTimeString());
+            localStorage.setItem("nom",data.data.nom);
+            localStorage.setItem("prenom",data.data.prenom);
           }
           this.router.navigate(['accueil']);
         }

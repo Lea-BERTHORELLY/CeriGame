@@ -39,14 +39,17 @@ function myFunction() {
 }
 </script>
 
-
 <div class="w3-container w3-card-4">
-  <p>Identifiant : {{identifiant}} </p>
-  <p>Nom : {{nom}} </p>
-  <p>Prénom : {{prenom}} </p>
-  <p>Date de naissance : {{date_naissance}} </p>
-</div>
 
+  <img src="{{imageProfil}}" width="100" height="100">
+  <p>Nom : {{nom}}</p>
+  <p>Prénom: {{prenom}}</p>
+
+  <!-- <p>Identifiant : {{identifiant}} </p>
+    <p>Nom : {{us.nom}} </p>
+    <p>Prénom : {{us.prenom}} </p>  -->
+    <!-- <p>Date de naissance : {{date_naissance}} </p> -->
+</div>
 <form class="w3-container w3-card-4" name="formProfile" #formProfile="ngForm" (ngSubmit)="Modify(formProfile)">
     <div class="form-group"></div>
     <p>      

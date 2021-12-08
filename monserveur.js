@@ -56,35 +56,42 @@ app.post('/login', (request, response) => {
 			
 			client.query(sql, (err, result) => {
 				//console.log(username);
-				console.log('mdp bdd : '+result.rows[0].motpasse);
-				console.log('mdp entré: '+sha1(password));
+				//console.log('mdp bdd : '+result.rows[0].motpasse);
+				//console.log('mdp entré: '+sha1(password));
 				if(err){
 					console.log('Erreur d’exécution de la requete, utilisateur non trouvé' + err.stack);
 				} 
 				else if((result.rows[0] != null) && (result.rows[0].motpasse == sha1(password)))
 				{
 
+					var user = {
+						id : result.rows[0].id,
+						nom : result.rows[0].nom,
+						prenom: result.rows[0].prenom,
+						date_naissance: result.rows[0].date_naissance,
+						image: result.rows[0].avatar,
+					}
+
 					request.session.isConnected = true;
-					responseData.data=true;
+					responseData.data=user;
 					//responseData.data=result.rows[0].nom;
 					responseData.statusMsg='Connexion réussie : bonjour '+result.rows[0].prenom;
 					request.session.user_id = result.rows[0].id;
 					responseData.statusRep=true;
 					request.session.identifiant = username;
-
 					request.session.nom = result.rows[0].nom;
 					request.session.prenom = result.rows[0].prenom;
 					request.session.date_de_naissance = result.rows[0].date_naissance;
 					//console.log('Connexion réussie : bienvenue utilisateur '+ username);
 					//console.log('Etat connexion: '+result.rows[0].statut_connexion);
-					console.log('Youhou vous êtes connecté !');
+					//console.log('Youhou vous êtes connecté !');
 					client.query("UPDATE fredouil.users SET statut_connexion = 1 WHERE identifiant ='"+username+"';",(err,result)=> {
 						if(err){
 							console.log('Erreur d’exécution de la requete, impossible de mettre à jour' + err.stack);
 						} 
 						else
 							request.session.statut = 1;	
-							console.log('MAJ statut effectuée ! ');		
+							//console.log('MAJ statut effectuée ! ');		
 							//console.log("affichage de l identifiant : "+request.session.identifiant);			   
 
 					});
@@ -94,10 +101,13 @@ app.post('/login', (request, response) => {
 				else{
 					//console.log('Connexion échouée : informations de connexion incorrectes');
 					responseData.statusMsg='Connexion échouée : informations de connexion incorrectes';
-					responseData.data=false;
+					//responseData.data=false;
+					
 
 				}
+				//console.log(user);
 				response.send(responseData);
+				//response.send(user);
 			});
 			client.release(); 
 		}
@@ -110,7 +120,7 @@ app.post('/profile', (request, response) => {
 	var humeur = request.body.humeur;
 	var image = request.body.image;
 	var mdp = request.body.mdp;
-	console.log('mot de passe : '+request.body.mdp);
+	//console.log('mot de passe : '+request.body.mdp);
 	if(humeur!=undefined)
 	{
 		sql_humeur = "UPDATE fredouil.users SET humeur = '"+ humeur +"' WHERE identifiant ='"+request.session.identifiant+"';";
@@ -189,8 +199,9 @@ app.post('/profile', (request, response) => {
 });
 
 app.get('/profile',(request,response)=>{
-
-
+	//sqlFetch = "SELECT * FROM fredouil.users where identifiant='"+request.session.identifiant+"';";
+	//console.log(responseData.data.prenom);
+	response.send(responseData);
 
 });
 

@@ -19,8 +19,7 @@ export class ProfilComponent implements OnInit {
 
   nom!: String;
   prenom!: String;
-  identifiant!: String;
-  date_naissance!: String;
+  imageProfil!: String;
 
   router: Router;
   constructor(_router : Router, _bandeau : BandeauService, _profile : ProfileService) {
@@ -30,6 +29,7 @@ export class ProfilComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.GetProfile();
    /* this.nom = JSON.parse(sessionStorage.getItem('user') || '{}').nom;
     this.prenom = JSON.parse(sessionStorage.getItem('user') || '{}').prenom;
     this.identifiant = JSON.parse(sessionStorage.getItem('user') || '{}').identifiant;
@@ -48,6 +48,15 @@ export class ProfilComponent implements OnInit {
     });
   }
 
+  GetProfile(){
+    this.profile.GetProfile().subscribe((data: any)=>{
+      this.nom= data.data.nom;
+      this.prenom= data.data.prenom;
+      this.imageProfil= data.data.image;
+      //this.bandeau.bandeauInfo = "Bienvenue sur votre profil "+this.nom+" ! ";
+    }
+    )
+  }
 
 
 }
