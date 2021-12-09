@@ -41,5 +41,5 @@ export class AppComponent {
     this.bannerType = type;
   }*/
 
+ }
 
-}

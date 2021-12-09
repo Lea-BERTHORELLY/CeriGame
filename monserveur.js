@@ -70,6 +70,7 @@ app.post('/login', (request, response) => {
 						prenom: result.rows[0].prenom,
 						date_naissance: result.rows[0].date_naissance,
 						image: result.rows[0].avatar,
+						humeur: result.rows[0].humeur,
 					}
 
 					request.session.isConnected = true;

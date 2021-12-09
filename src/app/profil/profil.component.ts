@@ -20,6 +20,7 @@ export class ProfilComponent implements OnInit {
   nom!: String;
   prenom!: String;
   imageProfil!: String;
+  humeurActuelle!:String;
 
   router: Router;
   constructor(_router : Router, _bandeau : BandeauService, _profile : ProfileService) {
@@ -46,6 +47,7 @@ export class ProfilComponent implements OnInit {
       }
       this.router.navigate(['accueil']);
     });
+    this.GetProfile();
   }
 
   GetProfile(){
@@ -53,6 +55,7 @@ export class ProfilComponent implements OnInit {
       this.nom= data.data.nom;
       this.prenom= data.data.prenom;
       this.imageProfil= data.data.image;
+      this.humeurActuelle= data.data.humeur;
       //this.bandeau.bandeauInfo = "Bienvenue sur votre profil "+this.nom+" ! ";
     }
     )
