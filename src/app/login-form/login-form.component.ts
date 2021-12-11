@@ -42,6 +42,8 @@ export class LoginFormComponent implements OnInit {
             localStorage.setItem("time",new Date().toTimeString());
             localStorage.setItem("nom",data.data.nom);
             localStorage.setItem("prenom",data.data.prenom);
+            localStorage.setItem("image",data.data.image);
+            localStorage.setItem("humeur",data.data.humeur);
             //this.bandeau.bandeauInfo = "Bienvenue " + localStorage.getItem("nom")+" votre dernière connexion remonte au "+localStorage.getItem("date") + " à "+ localStorage.getItem("time");
           }            
           else{
@@ -50,6 +52,8 @@ export class LoginFormComponent implements OnInit {
             localStorage.setItem("time",new Date().toTimeString());
             localStorage.setItem("nom",data.data.nom);
             localStorage.setItem("prenom",data.data.prenom);
+            localStorage.setItem("image",data.data.image);
+            localStorage.setItem("humeur",data.data.humeur);
           }
           this.router.navigate(['accueil']);
         }

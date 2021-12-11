@@ -17,10 +17,10 @@ export class ProfilComponent implements OnInit {
   @Input() image: any;
   @Input() mdp:any;
 
-  nom!: String;
-  prenom!: String;
-  imageProfil!: String;
-  humeurActuelle!:String;
+  nom!: any;
+  prenom!: any;
+  imageProfil!: any;
+  humeurActuelle!:any;
 
   router: Router;
   constructor(_router : Router, _bandeau : BandeauService, _profile : ProfileService) {
@@ -43,6 +43,8 @@ export class ProfilComponent implements OnInit {
     {
       if((formProfile.form.value.humeur!=undefined) || (formProfile.form.value.image!=undefined) || (formProfile.form.value.mdp!=undefined)  ){
         this.bandeau.bandeauInfo = "Profil modifié ! ";
+        localStorage.setItem("image",formProfile.form.value.image);
+        localStorage.setItem("humeur",formProfile.form.value.humeur);
         this.router.navigate(['accueil']);
       }
       this.router.navigate(['accueil']);
@@ -52,10 +54,15 @@ export class ProfilComponent implements OnInit {
 
   GetProfile(){
     this.profile.GetProfile().subscribe((data: any)=>{
-      this.nom= data.data.nom;
-      this.prenom= data.data.prenom;
+      //this.nom= data.data.nom;      
+      /*this.prenom= data.data.prenom;
       this.imageProfil= data.data.image;
-      this.humeurActuelle= data.data.humeur;
+      this.humeurActuelle= data.data.humeur;*/
+      
+      this.nom= localStorage.getItem("nom");
+      this.prenom= localStorage.getItem("prenom");
+      this.imageProfil= localStorage.getItem("image");
+      this.humeurActuelle= localStorage.getItem("humeur");
       //this.bandeau.bandeauInfo = "Bienvenue sur votre profil "+this.nom+" ! ";
     }
     )
