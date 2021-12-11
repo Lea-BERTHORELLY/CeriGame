@@ -18,7 +18,7 @@ justify-content: center;
 
 <!-- Navbar -->
 <div class="w3-bar w3-teal w3-hide-small">
-  <button routerLink="/accueil" class="w3-bar-item w3-button w3-padding-large w3-white">Accueil</button>
+  <button routerLink="/accueil" class="w3-bar-item w3-button w3-padding-large w3-hover-white">Accueil</button>
   <button routerLink="/profile" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Profil</button>
   <button routerLink="/quizz" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Quizz</button>
   <a href="index.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Déconnexion</a>
@@ -27,6 +27,7 @@ justify-content: center;
 <!-- Header -->
 <header class="w3-container w3-center" style="padding:30px 16px">
   <h1 class="w3-margin w3-jumbo">Page d'accueil de CeriGame :) </h1>
+  <h2 class="w3-margin w3-jumbo">Top Ten</h2>
   </header>
 
 
@@ -41,6 +42,25 @@ function myFunction() {
   }
 }
 </script>
+
+<div class="w3-container w3-card-4">
+  <p *ngIf="top_ten?.length == 0" ><i>Aucun joueur dans le top ten</i></p>
+  <table class="table">
+    <tr scope="col" *ngFor="let j of top_ten; index as i">
+        <td>
+            <div class="row w-100">
+                <div class="col small-col">
+                    <p><b>Numéro {{i + 1}} : </b>{{j.identifiant}}</p>
+                </div>
+                <div class="col small-col d-flex align-items-center justify-content-end">
+                    <p><b>Score total : </b>{{j.sum}}</p>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+</div>
+<div class="w3-container w3-card-4"></div>
 
 </body>
 </html>

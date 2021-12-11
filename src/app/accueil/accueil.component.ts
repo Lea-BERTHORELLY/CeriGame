@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TopTenService } from '../services/top-ten.service';
+
 
 @Component({
   selector: 'app-accueil',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccueilComponent implements OnInit {
 
-  constructor() { }
+  top_ten!: any[];
+
+  constructor(private topten: TopTenService) { }
 
   ngOnInit(): void {
+    this.getTheTopTen();
+  }
+
+  getTheTopTen(){
+    this.topten.getTopTen().subscribe(
+      response => {
+        this.top_ten = response;
+        console.log(this.top_ten);
+      },
+      error => {
+        console.log("Erreur: classement non récupéré");
+      }
+    )
   }
 
 }

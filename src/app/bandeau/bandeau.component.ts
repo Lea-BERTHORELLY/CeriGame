@@ -1,8 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Input } from '@angular/core';
-import { BannerType } from '../BannerType';
 import { BandeauService } from '../services/bandeau.service';
-import { AlertService } from '../services/alert.service';
 import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-bandeau',
@@ -12,6 +10,7 @@ import { Subscription } from 'rxjs';
 export class BandeauComponent implements OnInit {
 
     @Input() messageIn! : string;
+    @Input() typeAlerte!: string;
     messageOut! : string;
     @Output('messageOutBandeau')
     sendMessageEmitter: EventEmitter<string> = new EventEmitter<string>();

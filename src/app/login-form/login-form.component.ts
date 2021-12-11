@@ -37,7 +37,6 @@ export class LoginFormComponent implements OnInit {
         if(formConnex.form.value.username!=null && formConnex.form.value.password!=null){
           if(localStorage.getItem("date")){
             //this.bandeau.bandeauInfo = "Bienvenue " + data.data.nom+" votre dernière connexion remonte au "+localStorage.getItem("date") + " à "+ localStorage.getItem("time");
-            
             this.bandeau.bandeauInfo = "Bienvenue " + formConnex.form.value.username+" votre dernière connexion remonte au "+localStorage.getItem("date") + " à "+ localStorage.getItem("time");
             localStorage.setItem("date",new Date().toDateString());
             localStorage.setItem("time",new Date().toTimeString());

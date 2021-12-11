@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { BannerType } from './BannerType'
 import { AuthentificationService } from './services/authentification.service';
 import { BandeauComponent } from './bandeau/bandeau.component';
-import { AlertService } from './services/alert.service';
+
 import { BandeauService } from './services/bandeau.service';
 
 @Component({
@@ -23,11 +22,10 @@ export class AppComponent {
   messageSuccess = 'Opération réussie !';
   messageLogin = 'Bienvenue sur la page d accueil, veuillez vous identifier';*/
   /*bandeauInfo !: string;
-  auth : AuthentificationService;
-  bannerType !: BannerType;*/
+  auth : AuthentificationService;*/
 
 
-  constructor(_auth : AuthentificationService, _http: HttpClient,private alertService: AlertService,_bandeau : BandeauService){
+  constructor(_auth : AuthentificationService, _http: HttpClient,_bandeau : BandeauService){
     this.auth=_auth;
     this.bandeau=_bandeau;
   }
