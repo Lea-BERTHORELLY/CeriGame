@@ -43,8 +43,15 @@ export class ProfilComponent implements OnInit {
     {
       if((formProfile.form.value.humeur!=undefined) || (formProfile.form.value.image!=undefined) || (formProfile.form.value.mdp!=undefined)  ){
         this.bandeau.bandeauInfo = "Profil modifié ! ";
-        localStorage.setItem("image",formProfile.form.value.image);
-        localStorage.setItem("humeur",formProfile.form.value.humeur);
+        if(formProfile.form.value.humeur!=undefined)
+        {
+          localStorage.setItem("humeur",formProfile.form.value.humeur);
+        }
+        if(formProfile.form.value.image!=undefined)
+        {
+          localStorage.setItem("image",formProfile.form.value.image);
+        }
+        
         this.router.navigate(['accueil']);
       }
       this.router.navigate(['accueil']);
