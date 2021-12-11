@@ -14,9 +14,13 @@ export class ProfileService {
     return this.http.post(`http://pedago.univ-avignon.fr:3115/profile`, { humeur, image, mdp });
   }
 
-   GetProfile(){
+  GetProfile(){
     return this.http.get(`http://pedago.univ-avignon.fr:3115/profile`);
-   }
+  }
+
+  GetHistorique(){
+    return this.http.get(`http://pedago.univ-avignon.fr:3115/historique`);
+  }
 
 
 }

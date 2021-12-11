@@ -11,6 +11,7 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthentificationService } from './services/authentification.service';
 import { ProfilComponent } from './profil/profil.component';
+import { HistoriqueComponent } from './historique/historique.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ProfilComponent } from './profil/profil.component';
     BandeauComponent,
     LoginFormComponent,
     AccueilComponent,
-    ProfilComponent
+    ProfilComponent,
+    HistoriqueComponent
   ],
   imports: [
     BrowserModule,

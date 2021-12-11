@@ -7,6 +7,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { AccueilComponent } from './accueil/accueil.component';
 import { ProfilComponent} from './profil/profil.component';
 import { QuizzComponent } from './quizz/quizz.component';
+import { HistoriqueComponent } from './historique/historique.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'accueil', component: AccueilComponent },
   { path: 'profile', component: ProfilComponent },
   { path: 'quizz', component: QuizzComponent },
+  { path: 'historique', component: HistoriqueComponent },
   { path: '**', component: AccueilComponent }
   
 ];

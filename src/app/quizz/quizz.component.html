@@ -18,6 +18,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif;justify-content: center;
 <div class="w3-bar w3-teal w3-hide-small">
   <button routerLink="/accueil" class="w3-bar-item w3-button w3-padding-large w3-white">Accueil</button>  
   <button routerLink="/profile" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Profil</button>
+  <button routerLink="/historique" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Historique</button>
   <button routerLink="/quizz" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Quizz</button>
   <a href="index.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Déconnexion</a>
 </div>
@@ -38,6 +39,42 @@ function myFunction() {
   }
 }
 </script>
-<p>quizz works!</p>
+
+
+<div  *ngIf="etape == 2">
+
+  <h5>selectionnez un thème :</h5>
+
+  <select class="form-select form-control" >
+      <option *ngFor= "let theme of quizzService.themes" value="{{theme}}" >{{theme}}</option>
+  </select>
+</div>
+
+<div *ngIf="etape == 1">
+  <p>Choisissez un niveau de difficulté</p>
+  <div class="d-flex justify-content-center">
+      <div>
+          <div class="form-check">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="2" ng-checked="true">Facile
+              </label>
+          </div>
+          <div class="form-check">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="3">Moyen
+              </label>
+          </div>
+          <div class="form-check">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="4">Difficile
+              </label>
+          </div>
+          <br>
+          <br>
+          <button type="button" (click)="nextStep();getThemes()" class="btn btn-info">Suivant</button>
+      </div>
+  </div>
+</div>
+
 </body>
 </html>

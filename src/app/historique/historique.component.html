@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
+<title>Historique</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -27,8 +27,7 @@ justify-content: center;
 
 <!-- Header -->
 <header class="w3-container w3-center" style="padding:30px 16px">
-  <h1 class="w3-margin w3-jumbo">Page d'accueil de CeriGame :) </h1>
-  <h2 class="w3-margin w3-jumbo">Top Ten</h2>
+  <h1 class="w3-margin w3-jumbo">Historique de jeu</h1>
   </header>
 
 
@@ -45,16 +44,17 @@ function myFunction() {
 </script>
 
 <div class="w3-container w3-card-4">
-  <p *ngIf="top_ten?.length == 0" ><i>Aucun joueur dans le top ten</i></p>
+  <p *ngIf="historique?.length == 0" ><i>Aucune partie jouée</i></p>
   <table class="table">
-    <tr scope="col" *ngFor="let j of top_ten; index as i">
+    <tr scope="col" *ngFor="let h of historique; index as i">
         <td>
             <div class="row w-100">
                 <div class="col small-col">
-                    <p><b>Numéro {{i + 1}} : </b>{{j.identifiant}}</p>
-                </div>
-                <div class="col small-col d-flex align-items-center justify-content-end">
-                    <p><b>Score total : </b>{{j.sum}}</p>
+                    <p><b>Date : </b>{{h.date_jeu}}</p>
+                    <p><b>Niveau : </b>{{h.niveau_jeu}}</p>
+                    <p><b>Nombre de bonnes réponses : </b>{{h.nb_reponses_corr}}</p>
+                    <p><b>Temps : </b>{{h.temps}}</p>
+                    <p><b>Score : </b>{{h.score}}</p>
                 </div>
             </div>
         </td>

@@ -7,7 +7,8 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session); 
 const bodyParser= require('body-parser'); 
 
-const MongoClient = require('mongodb').MongoClient;
+//const MongoClient = require('mongodb').MongoClient;
+const mongo = require('mongodb');
 
 const app = express();
 app.use(express.static(__dirname + '/dist/CeriGame/'));
@@ -237,36 +238,80 @@ app.get('/accueil',(request,response)=>{
 });
 
 
-//Connection à la base MongoDB
-app.get('/quizz', (request, response) => {
-    // Connexion MongoDB
-    MongoClient.connect(dsnMongoDB, { useNewUrlParser: true, useUnifiedTopology: true }, 
-        function(err, mongoClient) {
-        if(err) {
-			return console.log('Connexion à la bdd impossible'); 
+app.get('/quizz', (req, response) => {
+	//console.log('On est dans les quizz');	
+	var MongoClient = mongo.MongoClient;
+    MongoClient.connect('mongodb://127.0.0.1:27017', (err, client) => {
+      if (err) 
+	  {
+		throw err;
+	  }
+      var db = client.db('db');
+      
+      db.collection('quizz').distinct('thème', (err, result) => {
+        if (err) 
+		{
+			throw err;
 		}
-        if(mongoClient) 
-		{ // Exécution des requêtes - findOne
-            console.log('connection MongoDB');
-            mongoClient.db().collection('quizz').find().toArray((function(err, data)
-			{
-                if(err) return console.log('erreur');
-                if(data){  
-                    console.log('requête effectuée !');
-                    
-                    var listeThemes = new Array();
-                    for(let i = 0; i<JSON.stringify(data.length); i++)
-                    {
-                        listeThemes[i]=data[i].thème;
-                    }
-                    console.log(JSON.stringify(listeThemes));
-                    response.send(listeThemes);
-                    mongoClient.close();
-                }
-            }));
-        }
+		//console.log('Valeur de result : '+result);
+		//on retourne les themes :)
+        response.json(result);
+      });
     });
 });
+
+app.post('/getQuestions' , (req,res)=>{
+	mongoClient.connect(url,(err, db) => {
+      if(err){
+          throw err ;
+      }
+
+      console.log('connecté avec succes!') ;
+      var mongo = db.db("db");
+
+      mongo.collection('quizz').find({'thème':req.body.theme}).toArray((err,result)=>{
+    
+     if (err) throw err;
+            min = Math.ceil(1);
+            max = Math.floor(30);
+            const index = Math.floor(Math.random() * max-min)+min  ;
+            console.log( result[0].quizz);
+            var array = [ result[0].quizz[index] , result[0].quizz[index+1] , result[0].quizz[index+2] , result[0].quizz[index+3] , result[0].quizz[index+4]];
+	        res.send( array);
+        db.close();
+      }); 
+    });
+}) ;
+
+app.get('/historique', (request,response) =>{
+
+	sql_historique="select date_jeu, niveau_jeu, nb_reponses_corr,temps,score from fredouil.historique join fredouil.users on fredouil.historique.id_user=fredouil.users.id where identifiant ='"+request.session.identifiant+"'order by date_jeu ;";
+	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
+	pool.connect(function(err, client, done) {
+		if(err){
+			console.log('Erreur , impossible de se connecter à la bdd ' + err.stack);
+		} 
+		else
+		{
+			console.log('L\'historique du joueur a été récupéré !');
+			client.query(sql_historique, (err, result) => {
+				if(err) {
+					// envoi des données
+					response.json();
+					console.log('Erreur , impossible d\'effectuer cette requête' + err.stack);
+				}
+				else {
+					//console.log(result.rows);
+					// envoi de l'historique
+					response.json(result.rows);
+				}
+			})
+			client.release();
+		}
+	});
+});
+
+
 
 app.get('/logout',(request,response) =>{
 	request.session.destroy();

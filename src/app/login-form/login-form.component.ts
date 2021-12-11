@@ -40,6 +40,7 @@ export class LoginFormComponent implements OnInit {
             this.bandeau.bandeauInfo = "Bienvenue " + formConnex.form.value.username+" votre dernière connexion remonte au "+localStorage.getItem("date") + " à "+ localStorage.getItem("time");
             localStorage.setItem("date",new Date().toDateString());
             localStorage.setItem("time",new Date().toTimeString());
+            localStorage.setItem("username",data.data.username);
             localStorage.setItem("nom",data.data.nom);
             localStorage.setItem("prenom",data.data.prenom);
             localStorage.setItem("image",data.data.image);
@@ -50,6 +51,7 @@ export class LoginFormComponent implements OnInit {
             this.bandeau.bandeauInfo = "Bienvenue " + formConnex.form.value.username;
             localStorage.setItem("date",new Date().toDateString());
             localStorage.setItem("time",new Date().toTimeString());
+            localStorage.setItem("username",data.data.username);
             localStorage.setItem("nom",data.data.nom);
             localStorage.setItem("prenom",data.data.prenom);
             localStorage.setItem("image",data.data.image);
