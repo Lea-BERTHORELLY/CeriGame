@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs';
 export class BandeauComponent implements OnInit {
 
     @Input() messageIn! : string;
-    @Input() typeAlerte!: string;
     messageOut! : string;
     @Output('messageOutBandeau')
     sendMessageEmitter: EventEmitter<string> = new EventEmitter<string>();

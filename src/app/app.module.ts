@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthentificationService } from './services/authentification.service';
 import { ProfilComponent } from './profil/profil.component';
 import { HistoriqueComponent } from './historique/historique.component';
+import { QuizzComponent } from './quizz/quizz.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { HistoriqueComponent } from './historique/historique.component';
     LoginFormComponent,
     AccueilComponent,
     ProfilComponent,
+    QuizzComponent,
     HistoriqueComponent
   ],
   imports: [

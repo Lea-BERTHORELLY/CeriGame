@@ -4,19 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif;justify-content: center;}
-.w3-bar,h1,button {font-family: "Montserrat", sans-serif}
-.fa-anchor,.fa-coffee {font-size:200px}
+h1,h2,h3,h4,h5,h6 {font-family: "Oswald"}
+body {font-family: "Open Sans";}
+.w3-bar,button {font-family: "Montserrat", sans-serif;
+justify-content: center;
+}
 </style>
 <body>
 
 <!-- Navbar -->
 <div class="w3-bar w3-teal w3-hide-small">
-  <button routerLink="/accueil" class="w3-bar-item w3-button w3-padding-large w3-white">Accueil</button>  
+  <button routerLink="/accueil" class="w3-bar-item w3-button w3-padding-large w3-hover-white">Accueil</button>  
   <button routerLink="/profile" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Profil</button>
   <button routerLink="/historique" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Historique</button>
   <button routerLink="/quizz" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Quizz</button>
@@ -41,16 +43,7 @@ function myFunction() {
 </script>
 
 
-<div  *ngIf="etape == 2">
-
-  <h5>selectionnez un thème :</h5>
-
-  <select class="form-select form-control" >
-      <option *ngFor= "let theme of quizzService.themes" value="{{theme}}" >{{theme}}</option>
-  </select>
-</div>
-
-<div *ngIf="etape == 1">
+<!-- <div *ngIf="choixDiff == true" class="w3-container w3-card-4">
   <p>Choisissez un niveau de difficulté</p>
   <div class="d-flex justify-content-center">
       <div>
@@ -70,8 +63,42 @@ function myFunction() {
               </label>
           </div>
           <br>
+      </div>
+  </div>
+</div>
+-->
+
+<div *ngIf="choixTheme == true" class="w3-container w3-card-4">
+
+  <h5>Sélectionnez un thème :</h5>
+
+  <select class="form-select form-control" >
+      <option *ngFor= "let theme of quizzService.themes" value="{{theme}}" >{{theme}}</option>
+  </select>
+</div>
+
+<div *ngIf="choixDiff == true" class="w3-container w3-card-4">
+  <p>Choisissez un niveau de difficulté : </p>
+  <div class="d-flex justify-content-center">
+      <div>
+          <div class="form-check">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="2" ng-checked="true">Facile
+              </label>
+          </div>
+          <div class="form-check">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="3">Moyen
+              </label>
+          </div>
+          <div class="form-check">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="4">Difficile
+              </label>
+          </div>
           <br>
-          <button type="button" (click)="nextStep();getThemes()" class="btn btn-info">Suivant</button>
+          <br>
+          <button type="button" (click)="toThemes();getThemes()" class="btn btn-info">Suivant</button>
       </div>
   </div>
 </div>

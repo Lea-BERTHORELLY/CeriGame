@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class QuizzService {
-  themes!: JSON;
+  themes!: string;
   quizz!: JSON;
 
   constructor(private http : HttpClient) { }
