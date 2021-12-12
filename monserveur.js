@@ -261,12 +261,10 @@ app.get('/quizz', (req, response) => {
 });
 
 app.post('/getQuestions' , (req,res)=>{
-	mongoClient.connect(url,(err, db) => {
+	mongo.MongoClient.connect(url,(err, db) => {
       if(err){
           throw err ;
       }
-
-      console.log('connecté avec succes!') ;
       var mongo = db.db("db");
 
       mongo.collection('quizz').find({'thème':req.body.theme}).toArray((err,result)=>{
@@ -275,7 +273,7 @@ app.post('/getQuestions' , (req,res)=>{
             min = Math.ceil(1);
             max = Math.floor(30);
             const index = Math.floor(Math.random() * max-min)+min  ;
-            console.log( result[0].quizz);
+            //console.log( result[0].quizz); //affichage des questions du theme choisi + la/les réponses
             var array = [ result[0].quizz[index] , result[0].quizz[index+1] , result[0].quizz[index+2] , result[0].quizz[index+3] , result[0].quizz[index+4]];
 	        res.send( array);
         db.close();

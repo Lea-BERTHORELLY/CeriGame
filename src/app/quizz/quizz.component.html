@@ -68,16 +68,8 @@ function myFunction() {
 </div>
 -->
 
-<div *ngIf="choixTheme == true" class="w3-container w3-card-4">
 
-  <h5>Sélectionnez un thème :</h5>
-
-  <select class="form-select form-control" >
-      <option *ngFor= "let theme of quizzService.themes" value="{{theme}}" >{{theme}}</option>
-  </select>
-</div>
-
-<div *ngIf="choixDiff == true" class="w3-container w3-card-4">
+<div *ngIf="choixDiff == true" class="w3-container w3-card-4 justify-content-center">
   <p>Choisissez un niveau de difficulté : </p>
   <div class="d-flex justify-content-center">
       <div>
@@ -100,6 +92,36 @@ function myFunction() {
           <br>
           <button type="button" (click)="toThemes();getThemes()" class="btn btn-info">Suivant</button>
       </div>
+  </div>
+</div>
+
+
+<div *ngIf="choixTheme == true" class="w3-container w3-card-4" >
+
+  <h5>Sélectionnez un thème :</h5>
+
+  <select class="form-select form-control" (change)="selectTheme($event)">
+      <option *ngFor= "let theme of themes" value="{{theme}}" >{{theme}}</option>
+  </select>
+</div>
+
+<div class="w3-container w3-card-4">
+  <div class="container row" *ngIf= "quizz && !showThemes ">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Question {{nb_questions+1}}</h3>
+      </div>
+      <div class="panel-body">
+        <p>{{quizz[nb_questions].question}}</p>
+      </div>
+      <div class="list-group"> 
+        <option class="list-group-item" type="radio" *ngFor="let proposition of quizz[nb_questions].propositions; let i = index" (click)="answer(quizz[nb_questions].id , i) ">
+          {{proposition}}
+        </option>
+
+      </div>
+    </div>
+
   </div>
 </div>
 

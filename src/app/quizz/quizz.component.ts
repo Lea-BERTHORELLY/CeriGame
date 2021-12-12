@@ -16,7 +16,21 @@ export class QuizzComponent implements OnInit {
   showThemes = true;
   choixDiff!:boolean;
   choixTheme!:boolean;
-   etape!: number;
+
+  theme!:any;
+  themes!: any;
+  quizz!: any;
+
+
+  tps_par_question!: number; //temps mis pour répondre à une question
+  tps_total!: number; //temps mis pour faire tout le quizz
+
+  nb_questions: number=0; //nombre de questions déjà passées
+  nb_reponses_justes: any=0; //nombre de bonnes réponses
+
+  reponses_justes!: any[]; //réponses justes
+  reponses_choisies!: any[]; //réponses choisies
+
   constructor(public quizzService : QuizzService ,  private router : Router,_bandeau : BandeauService) { 
     this.bandeau=_bandeau;
   }
@@ -36,19 +50,16 @@ export class QuizzComponent implements OnInit {
     this.choixTheme=true;
  };
 
-    nextStep(){
+    /*nextStep(){
        this.etape++;
-    };
+    };*/
 
 
 
   getThemes(){
 
       this.quizzService.getThemes().subscribe((response : any) =>{
-
-        this.quizzService.themes = response;
-        
-        
+        this.themes = response;
       },(error: any) =>{
         console.log('Error is : ' , error);
     })
@@ -56,19 +67,44 @@ export class QuizzComponent implements OnInit {
   }
 
 
-  selectTheme(theme : String ){
-  
-      this.quizzService.getQuestions(theme).subscribe((response : any) =>{
-
-        this.quizzService.quizz = response;
-        this.showThemes = false;       
-
+  selectTheme(event: Event ){
+      this.theme= (event.target as HTMLInputElement).value;
+      this.quizzService.getQuestions(this.theme).subscribe((response : any) =>{
+        this.quizz = response;
+        this.showThemes = false; 
       },(error: any) =>{
         console.log('Error is : ' , error);
     })
    
   }
 
+
+  answer(questionId: any , reponses_choisies: any){
+
+   
+    // si le joueur à choisi la bonne réponse
+   if(this.quizz[this.nb_questions].réponse == 
+     this.quizz[this.nb_questions].propositions[reponses_choisies]){
+
+        // stockage des id de questions correctement répondues
+        this.reponses_justes[this.nb_reponses_justes] = this.quizz[this.nb_questions].id;
+        // incrémentation de nombre des réponses correctes
+        this.nb_reponses_justes++;
+        
+   }
+
+   // stockage du choix dans un tableau 
+   this.reponses_choisies[this.nb_questions] = reponses_choisies;
+ 
+   // Pour passer à la question suivante 
+   this.nb_questions++;
+   
+   // verifier si les questions ont términé (dans ce cas nous avons 5 questions au total)
+   /*if(this.nb_questions == 5){
+      clearInterval(this.timer);
+      //this.router.navigate(['result']);
+   }*/
+}
 
   /*@Input()
   themes!: string[];
