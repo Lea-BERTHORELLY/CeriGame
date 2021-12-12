@@ -21,6 +21,7 @@ export class QuizzComponent implements OnInit {
   themes!: any;
   quizz!: any;
 
+  difficulte!:any;
   score: number=0;
 
   tps_par_question!: number; //temps mis pour répondre à une question
@@ -32,29 +33,34 @@ export class QuizzComponent implements OnInit {
   reponses_justes!: any[]; //réponses justes
   reponses_choisies!: any[]; //réponses choisies
 
+  bonneReponse : string = "";
+
   constructor(public quizzService : QuizzService ,  private router : Router,_bandeau : BandeauService) { 
     this.bandeau=_bandeau;
   }
 
   ngOnInit(): void {
-    //this.bandeau.bandeauInfo = "Bienvenue sur la page du quizz, choisissez une difficulté ";
     this.showThemes = true;
     this.getThemes();
-    //this.etape =1;
     this.choixDiff=true;
     this.choixTheme=false;
   }
 
-  toThemes(){
+  toThemes(difficulte : string){
     //this.bandeau.bandeauInfo = "Choisissez un thème ";
+    if(difficulte == "facile"){
+      this.difficulte = 1;
+    }
+    else if(difficulte == "intermédiaire"){
+      this.difficulte = 2;
+    }
+    else{
+      this.difficulte = 3;
+    }
     this.choixDiff=false;
     this.choixTheme=true;
+    this.bandeau.bandeauInfo = "Difficulté choisie : "+difficulte;
  };
-
-    /*nextStep(){
-       this.etape++;
-    };*/
-
 
 
   getThemes(){
@@ -81,50 +87,31 @@ export class QuizzComponent implements OnInit {
 
 
 
-  choix(proposition : string){
-    this.reponses_choisies[this.nb_questions]=proposition; //on stocke le choix dans le tableau des réponses choisies
-    this.bandeau.bandeauInfo = "Proposition récupérée ! Votre score est de  "+ this.score;
-    
-    if(proposition == this.quizz[this.nb_questions].réponse){
-      this.reponses_justes[this.nb_questions]=proposition;
+
+  pickProposition(proposition : string){
+    this.bonneReponse = this.quizz[this.nb_questions].réponse;
+    if(proposition == this.bonneReponse){
+      this.score += 100*(this.difficulte);
+      //this.reponses_justes[this.nb_questions].push(proposition);
       this.nb_reponses_justes++;
-      this.score += 100;
       this.bandeau.bandeauInfo = "Réponse juste ! Votre score passe à  "+ this.score;
+      this.nb_questions++;
+    
     }
     else{
-      this.score -=20;
+      this.score -=20*(this.difficulte);
       this.bandeau.bandeauInfo = "Réponse fausse ! Votre score passe à  "+ this.score;
+      this.nb_questions++;
     }
-    this.nb_questions++;
+
+    //this.reponses_choisies[this.nb_questions]=proposition; //on stocke le choix dans le tableau des réponses choisies
+    if(this.nb_questions==10){ //nombre de questions auxquelles on doit répondre
+      this.bandeau.bandeauInfo = "Quizz terminé ! Votre score est de "+ this.score+" !";
+      this.router.navigate(['accueil']);
+    }
+    //this.bandeau.bandeauInfo = "Réponse : "+ this.reponse +" nb question : "+this.nb_questions;
   }
 
-
-/*answer(questionId: any , reponses_choisies: any){
-
-  
-  // si le joueur à choisi la bonne réponse
-  if(this.quizz[this.nb_questions].réponse == 
-    this.quizz[this.nb_questions].propositions[reponses_choisies]){
-
-      // stockage des id de questions correctement répondues
-      this.reponses_justes[this.nb_reponses_justes] = this.quizz[this.nb_questions].id;
-      // incrémentation de nombre des réponses correctes
-      this.nb_reponses_justes++;
-      
-  }
-
-  // stockage du choix dans un tableau 
-  this.reponses_choisies[this.nb_questions] = reponses_choisies;
-
-  // Pour passer à la question suivante 
-  this.nb_questions++;
-  
-  // verifier si le quizz est fini (dans ce cas nous avons 5 questions au total)
-  if(this.nb_questions == 5){
-    //clearInterval(this.timer);
-    this.router.navigate(['accueil']);
-  }
-}*/
 
   /*@Input()
   themes!: string[];
