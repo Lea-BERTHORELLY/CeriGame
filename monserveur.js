@@ -211,7 +211,8 @@ app.get('/accueil',(request,response)=>{
 	//on récupère les scores totaux par joueur :
 	//sql_scores = "select id_user,SUM(score) from fredouil.historique group by id_user order by sum desc limit 10;";
 	//sql_scores= "select distinct u.identifiant, score from fredouil.historique join fredouil.users u on fredouil.historique.id_user=u.id order by score desc limit 10;";
-	sql_scores="select identifiant, SUM(score) from fredouil.historique join fredouil.users on fredouil.historique.id_user=fredouil.users.id GROUP BY identifiant order by SUM(score) desc limit 10;";
+	//sql_scores="select identifiant, SUM(score) from fredouil.historique join fredouil.users on fredouil.historique.id_user=fredouil.users.id GROUP BY identifiant order by SUM(score) desc limit 10;";
+	sql_scores="select identifiant,avatar, SUM(score) from fredouil.historique join fredouil.users on fredouil.historique.id_user=fredouil.users.id GROUP BY identifiant,avatar order by SUM(score) desc limit 10;";
 	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
 	pool.connect(function(err, client, done) {
 		if(err){

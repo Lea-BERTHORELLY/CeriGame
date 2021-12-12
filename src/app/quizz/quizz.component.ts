@@ -21,6 +21,7 @@ export class QuizzComponent implements OnInit {
   themes!: any;
   quizz!: any;
 
+  score: number=0;
 
   tps_par_question!: number; //temps mis pour répondre à une question
   tps_total!: number; //temps mis pour faire tout le quizz
@@ -79,32 +80,51 @@ export class QuizzComponent implements OnInit {
   }
 
 
-  answer(questionId: any , reponses_choisies: any){
 
-   
-    // si le joueur à choisi la bonne réponse
-   if(this.quizz[this.nb_questions].réponse == 
-     this.quizz[this.nb_questions].propositions[reponses_choisies]){
+  choix(proposition : string){
+    this.reponses_choisies[this.nb_questions]=proposition; //on stocke le choix dans le tableau des réponses choisies
+    this.bandeau.bandeauInfo = "Proposition récupérée ! Votre score est de  "+ this.score;
+    
+    if(proposition == this.quizz[this.nb_questions].réponse){
+      this.reponses_justes[this.nb_questions]=proposition;
+      this.nb_reponses_justes++;
+      this.score += 100;
+      this.bandeau.bandeauInfo = "Réponse juste ! Votre score passe à  "+ this.score;
+    }
+    else{
+      this.score -=20;
+      this.bandeau.bandeauInfo = "Réponse fausse ! Votre score passe à  "+ this.score;
+    }
+    this.nb_questions++;
+  }
 
-        // stockage des id de questions correctement répondues
-        this.reponses_justes[this.nb_reponses_justes] = this.quizz[this.nb_questions].id;
-        // incrémentation de nombre des réponses correctes
-        this.nb_reponses_justes++;
-        
-   }
 
-   // stockage du choix dans un tableau 
-   this.reponses_choisies[this.nb_questions] = reponses_choisies;
- 
-   // Pour passer à la question suivante 
-   this.nb_questions++;
-   
-   // verifier si les questions ont términé (dans ce cas nous avons 5 questions au total)
-   /*if(this.nb_questions == 5){
-      clearInterval(this.timer);
-      //this.router.navigate(['result']);
-   }*/
-}
+/*answer(questionId: any , reponses_choisies: any){
+
+  
+  // si le joueur à choisi la bonne réponse
+  if(this.quizz[this.nb_questions].réponse == 
+    this.quizz[this.nb_questions].propositions[reponses_choisies]){
+
+      // stockage des id de questions correctement répondues
+      this.reponses_justes[this.nb_reponses_justes] = this.quizz[this.nb_questions].id;
+      // incrémentation de nombre des réponses correctes
+      this.nb_reponses_justes++;
+      
+  }
+
+  // stockage du choix dans un tableau 
+  this.reponses_choisies[this.nb_questions] = reponses_choisies;
+
+  // Pour passer à la question suivante 
+  this.nb_questions++;
+  
+  // verifier si le quizz est fini (dans ce cas nous avons 5 questions au total)
+  if(this.nb_questions == 5){
+    //clearInterval(this.timer);
+    this.router.navigate(['accueil']);
+  }
+}*/
 
   /*@Input()
   themes!: string[];

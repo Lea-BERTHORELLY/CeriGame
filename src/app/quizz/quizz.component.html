@@ -75,17 +75,17 @@ function myFunction() {
       <div>
           <div class="form-check">
               <label class="form-check-label">
-                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="2" ng-checked="true">Facile
+                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="1" ng-checked="true">Facile
               </label>
           </div>
           <div class="form-check">
               <label class="form-check-label">
-                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="3">Moyen
+                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="2">Moyen
               </label>
           </div>
           <div class="form-check">
               <label class="form-check-label">
-                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="4">Difficile
+                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="3">Difficile
               </label>
           </div>
           <br>
@@ -109,15 +109,17 @@ function myFunction() {
   <div class="container row" *ngIf= "quizz && !showThemes ">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Question {{nb_questions+1}}</h3>
+        <h3 class="panel-title">Question {{nb_questions+1}}</h3> <!--Numéro de la question-->
       </div>
       <div class="panel-body">
-        <p>{{quizz[nb_questions].question}}</p>
+        <p>{{quizz[nb_questions].question}}</p> <!--Intitulé de la question-->
       </div>
-      <div class="list-group"> 
-        <option class="list-group-item" type="radio" *ngFor="let proposition of quizz[nb_questions].propositions; let i = index" (click)="answer(quizz[nb_questions].id , i) ">
+      <div *ngFor="let proposition of quizz[nb_questions].propositions"> 
+        <button type="button" ng-click="choix(proposition)" class="btn btn-primary">{{proposition}}</button>
+       
+        <!-- <button class="list-group-item" *ngFor="let proposition of quizz[nb_questions].propositions; let i = index" (click)="answer(quizz[nb_questions].id , i) ">
           {{proposition}}
-        </option>
+        </button> Liste des propositions -->
 
       </div>
     </div>
