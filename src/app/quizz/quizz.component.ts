@@ -26,14 +26,10 @@ export class QuizzComponent implements OnInit {
   difficulte!:any;
   score: number=0;
 
-  tps_par_question: number=0; //temps mis pour répondre à une question
   tps_total: number=0; //temps mis pour faire tout le quizz
 
   nb_questions: number=0; //nombre de questions déjà passées
   nb_reponses_justes: any=0; //nombre de bonnes réponses
-
-  reponses_justes!: any[]; //réponses justes
-  reponses_choisies!: any[]; //réponses choisies
 
   bonneReponse : string = "";
 

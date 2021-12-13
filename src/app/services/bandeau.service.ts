@@ -6,11 +6,7 @@ import { BehaviorSubject, Observable, Observer } from 'rxjs';
   providedIn: 'root'
 })
 export class BandeauService {
-  //public eventEmit: any;
   bandeauInfo!: string;
   classMessage!: string;
-  /*messageOutput!: string;
-  messageOutputUpdate!:Observable<string>;
-  messageOutputObserver!: Observer<string>;*/
 
 }

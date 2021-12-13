@@ -24,30 +24,6 @@ constructor(private _http : HttpClient){}
     }
     
   };
-  /*VerifyId(username : string, password : string) : Observable<boolean> {
-    var trueId : boolean = false;
-    return Observable.create((observer: Subscriber<boolean>) => {
-    this._http.post<any>('http://pedago.univ-avignon.fr:3115/login/',{username : username, password : password}).subscribe(
-      (data: { statusResp: any; data: { user: any; }; }) => {
-        if(data.statusResp){
-          localStorage.setItem('user',JSON.stringify(data.data.user));
-          trueId = true;
-        }
-        else{
-          trueId = false;
-        }
-      },
-      (error: any) => {
-        console.error('une erreur est survenue!', error);
-        trueId = false;
-      },
-      () => {
-        observer.next(trueId); 
-      }
-      );
-    });
-
-  }*/
   VerifyId(username: string, password: string) : Observable<any> {
     return this._http.post<any>('http://pedago.univ-avignon.fr:3115/login', {username: username, password: password});
   }
