@@ -196,9 +196,6 @@ app.get('/profile',(request,response)=>{
 
 app.get('/accueil',(request,response)=>{
 	//on récupère les scores totaux par joueur :
-	//sql_scores = "select id_user,SUM(score) from fredouil.historique group by id_user order by sum desc limit 10;";
-	//sql_scores= "select distinct u.identifiant, score from fredouil.historique join fredouil.users u on fredouil.historique.id_user=u.id order by score desc limit 10;";
-	//sql_scores="select identifiant, SUM(score) from fredouil.historique join fredouil.users on fredouil.historique.id_user=fredouil.users.id GROUP BY identifiant order by SUM(score) desc limit 10;";
 	sql_scores="select identifiant,avatar, SUM(score) from fredouil.historique join fredouil.users on fredouil.historique.id_user=fredouil.users.id GROUP BY identifiant,avatar order by SUM(score) desc limit 10;";
 	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
 	pool.connect(function(err, client, done) {
@@ -271,7 +268,7 @@ app.post('/getQuestions' , (req,res)=>{
 
 app.get('/historique', (request,response) =>{
 
-	sql_historique="select date_jeu, niveau_jeu, nb_reponses_corr,temps,score from fredouil.historique join fredouil.users on fredouil.historique.id_user=fredouil.users.id where identifiant ='"+request.session.identifiant+"'order by date_jeu ;";
+	sql_historique="select date_jeu, niveau_jeu, nb_reponses_corr,temps,score from fredouil.historique join fredouil.users on fredouil.historique.id_user=fredouil.users.id where identifiant ='"+request.session.identifiant+"'order by fredouil.historique.id desc ;";
 	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
 	pool.connect(function(err, client, done) {
 		if(err){
@@ -304,11 +301,8 @@ app.post('/ajoutPartie', (request, response) => {
 	var nb_reponses_justes = request.body.bonnes_rep;
 	var tps_total = request.body.temps;
 	var score = request.body.score;
-	console.log('id : '+id+' date : '+date+' difficulté : '+difficulte+' bonnes réponses : '+nb_reponses_justes+' temps : '+tps_total+' score : '+score);
-	//sql_game = "UPDATE fredouil.historique SET id_user = '"+ id +"',date_jeu='"+date+"',niveau_jeu = '"+difficulte+"',nb_reponses_corr ='"+nb_reponses_justes+"', temps ='"+tps_total+"',score='"+score+"'WHERE identifiant ='"+request.session.identifiant+"';";
-	//sql_game ="INSERT INTO fredouil.historique (id_user, date_jeu, niveau_jeu, nb_reponses_corr, temps, score) VALUES (id, date, difficulte, nb_reponses_justes, tps_total, score);";
+	//console.log('id : '+id+' date : '+date+' difficulté : '+difficulte+' bonnes réponses : '+nb_reponses_justes+' temps : '+tps_total+' score : '+score);
 	sql_game =`INSERT INTO fredouil.historique (id_user, date_jeu, niveau_jeu, nb_reponses_corr, temps, score) VALUES ('${id}', '${date}', '${difficulte}', '${nb_reponses_justes}','${tps_total}', '${score}');`;
-	
 	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
 	pool.connect(function(err, client, done) {
 		if(err){

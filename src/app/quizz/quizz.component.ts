@@ -89,7 +89,7 @@ export class QuizzComponent implements OnInit {
 
 
 
-  pickProposition(proposition : string){
+  choix(proposition : string){
     this.bonneReponse = this.quizz[this.nb_questions].réponse;
     if(proposition == this.bonneReponse){
       this.score += 100*(this.difficulte);

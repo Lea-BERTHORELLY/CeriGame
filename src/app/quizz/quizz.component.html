@@ -49,32 +49,6 @@ function myFunction() {
   <button (click)="toThemes('difficile');getThemes()" class="btn btn-primary">Difficile</button>
 </div>
 
-<!-- <div *ngIf="choixDiff == true" class="w3-container w3-card-4 justify-content-center">
-  <p>Choisissez un niveau de difficulté : </p>
-  <div class="d-flex justify-content-center">
-      <div>
-          <div class="form-check">
-              <label class="form-check-label">
-                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="1" ng-checked="true">Facile
-              </label>
-          </div>
-          <div class="form-check">
-              <label class="form-check-label">
-                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="2">Moyen
-              </label>
-          </div>
-          <div class="form-check">
-              <label class="form-check-label">
-                  <input type="radio" class="form-check-input" ng-model="level" name="level" value="3">Difficile
-              </label>
-          </div>
-          <br>
-          <br>
-          <button type="button" (click)="toThemes();getThemes()" class="btn btn-info">Suivant</button>
-      </div>
-  </div>
-</div> -->
-
 
 <div *ngIf="choixTheme == true" class="w3-container w3-card-4" >
 
@@ -95,16 +69,8 @@ function myFunction() {
         <p>{{quizz[nb_questions].question}}</p> <!--Intitulé de la question-->
       </div>
       <div class="col-sm-12 form-group" *ngFor="let proposition of quizz[nb_questions].propositions">
-        <button (click)="pickProposition(proposition)" class="btn btn-primary">{{proposition}}</button>
-    </div>
-     <!-- <div *ngFor="let proposition of quizz[nb_questions].propositions"> 
-        <button type="button" (click)="choix(proposition)" class="btn btn-primary">{{proposition}}</button>
-     --> 
-        <!-- <button class="list-group-item" *ngFor="let proposition of quizz[nb_questions].propositions; let i = index" (click)="answer(quizz[nb_questions].id , i) ">
-          {{proposition}}
-        </button> Liste des propositions -->
-
-     <!-- </div> -->
+        <button (click)="choix(proposition)" class="btn btn-primary">{{proposition}}</button>
+      </div>
     </div>
 
   </div>
