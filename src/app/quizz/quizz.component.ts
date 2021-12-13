@@ -105,14 +105,24 @@ export class QuizzComponent implements OnInit {
       this.nb_questions++;
     }
 
-    //this.reponses_choisies[this.nb_questions]=proposition; //on stocke le choix dans le tableau des réponses choisies
-    if(this.nb_questions==5){ 
-      this.bandeau.bandeauInfo = "Quizz terminé  ! Votre score est de "+ this.score+" !";
-      //this.router.navigate(['accueil']);
-      this.AddGame();
+    if(this.difficulte==1){ 
+      if(this.nb_questions==5){
+        this.bandeau.bandeauInfo = "Quizz terminé en mode facile ! Votre score est de "+ this.score+" !";
+        this.AddGame();
+      }
     }
-    
-    //this.bandeau.bandeauInfo = "Réponse : "+ this.reponse +" nb question : "+this.nb_questions;
+    if(this.difficulte==2){ 
+      if(this.nb_questions==10){
+        this.bandeau.bandeauInfo = "Quizz terminé en mode intermédiaire ! Votre score est de "+ this.score+" !";
+        this.AddGame();
+      }
+    }
+    if(this.difficulte==3){ 
+      if(this.nb_questions==15){
+        this.bandeau.bandeauInfo = "Quizz terminé en mode difficile ! Votre score est de "+ this.score+" !";
+        this.AddGame();
+      }
+    }
   }
 
   AddGame(){

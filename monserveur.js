@@ -245,7 +245,7 @@ app.get('/quizz', (req, response) => {
     });
 });
 
-app.post('/getQuestions' , (req,res)=>{
+app.post('/questions' , (req,res)=>{
 	mongo.MongoClient.connect(url,(err, db) => {
       if(err){
           throw err ;
@@ -256,10 +256,13 @@ app.post('/getQuestions' , (req,res)=>{
     
      if (err) throw err;
             min = Math.ceil(1);
-            max = Math.floor(30);
+			max = Math.ceil(30);
+            //max = Math.floor(30);
+			// On renvoie un nombre entier aléatoire entre une valeur min et une valeur max , ici entre 1 et 29 (30 est exclu)
             const index = Math.floor(Math.random() * max-min)+min  ;
             //console.log( result[0].quizz); //affichage des questions du theme choisi + la/les réponses
-            var array = [ result[0].quizz[index] , result[0].quizz[index+1] , result[0].quizz[index+2] , result[0].quizz[index+3] , result[0].quizz[index+4], , result[0].quizz[index+5], , result[0].quizz[index+6], result[0].quizz[index+7], result[0].quizz[index+8], result[0].quizz[index+9], result[0].quizz[index+10], result[0].quizz[index+11], result[0].quizz[index+12], result[0].quizz[index+13], result[0].quizz[index+14], result[0].quizz[index+15], result[0].quizz[index+16], result[0].quizz[index+17], result[0].quizz[index+18], result[0].quizz[index+19], result[0].quizz[index+20], result[0].quizz[index+21], result[0].quizz[index+22], result[0].quizz[index+23], result[0].quizz[index+24], result[0].quizz[index+25], result[0].quizz[index+26], result[0].quizz[index+27], result[0].quizz[index+28], result[0].quizz[index+29]];
+			//tableau contenant les questions, dans un ordre aléatoire
+            var array = [ result[0].quizz[index] , result[0].quizz[index+1] , result[0].quizz[index+2] , result[0].quizz[index+3] , result[0].quizz[index+4],  result[0].quizz[index+5],  result[0].quizz[index+6], result[0].quizz[index+7], result[0].quizz[index+8], result[0].quizz[index+9], result[0].quizz[index+10], result[0].quizz[index+11], result[0].quizz[index+12], result[0].quizz[index+13], result[0].quizz[index+14], result[0].quizz[index+15], result[0].quizz[index+16], result[0].quizz[index+17], result[0].quizz[index+18], result[0].quizz[index+19], result[0].quizz[index+20], result[0].quizz[index+21], result[0].quizz[index+22], result[0].quizz[index+23], result[0].quizz[index+24], result[0].quizz[index+25], result[0].quizz[index+26], result[0].quizz[index+27], result[0].quizz[index+28], result[0].quizz[index+29]];
 	        res.send( array);
         db.close();
       }); 

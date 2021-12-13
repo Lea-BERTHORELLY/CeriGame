@@ -17,7 +17,7 @@ export class QuizzService {
   }
 
   getQuestions(theme : String) {
-    return this.http.post(`http://pedago.univ-avignon.fr:3115/getQuestions`, {theme});
+    return this.http.post(`http://pedago.univ-avignon.fr:3115/questions`, {theme});
   }
 
   addGame(date_jeu:number,difficulte: number, bonnes_rep: number, temps: number, score: number){
