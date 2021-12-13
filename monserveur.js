@@ -42,9 +42,6 @@ app.use(bodyParser.json({limit: '10mb'})); // Charge le middleware dans la pile 
 app.post('/login', (request, response) => {
 	var username = request.body.username;
 	var password = request.body.password;
-	//console.log('l utilisateur est : '+JSON.stringify(request.body.username));
-	//console.log('le mdp est : '+JSON.stringify(request.body.password));
-
 	sql = "select * from fredouil.users where identifiant='"+username+"';";
 
 	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
@@ -54,17 +51,12 @@ app.post('/login', (request, response) => {
 		} 
 		else {
 			console.log('Connexion vers la bdd établie avec succès')
-			
 			client.query(sql, (err, result) => {
-				//console.log(username);
-				//console.log('mdp bdd : '+result.rows[0].motpasse);
-				//console.log('mdp entré: '+sha1(password));
 				if(err){
 					console.log('Erreur d’exécution de la requete, utilisateur non trouvé' + err.stack);
 				} 
 				else if((result.rows[0] != null) && (result.rows[0].motpasse == sha1(password)))
 				{
-
 					var user = {
 						id : result.rows[0].id,
 						nom : result.rows[0].nom,
@@ -73,11 +65,8 @@ app.post('/login', (request, response) => {
 						image: result.rows[0].avatar,
 						humeur: result.rows[0].humeur,
 					}
-
 					request.session.isConnected = true;
 					responseData.data=user;
-					//responseData.data=result.rows[0].nom;
-					responseData.statusMsg='Connexion réussie : bonjour '+result.rows[0].prenom;
 					request.session.user_id = result.rows[0].id;
 					responseData.statusRep=true;
 					request.session.identifiant = username;
@@ -90,9 +79,6 @@ app.post('/login', (request, response) => {
 						} 
 						else
 							request.session.statut = 1;	
-							//console.log('MAJ statut effectuée ! ');		
-							//console.log("affichage de l identifiant : "+request.session.identifiant);			   
-
 					});
 				}
 				else{
@@ -103,23 +89,23 @@ app.post('/login', (request, response) => {
 			client.release(); 
 		}
 	})
-
 });
 
 app.post('/profile', (request, response) => {
-	//console.log('Don\'t mind me , I\'m a test ');
 	var humeur = request.body.humeur;
 	var image = request.body.image;
 	var mdp = request.body.mdp;
-	//console.log('mot de passe : '+request.body.mdp);
+	//si le champ humeur n'est pas vide on prépare la requete de modification de l'humeur
 	if(humeur!=undefined)
 	{
 		sql_humeur = "UPDATE fredouil.users SET humeur = '"+ humeur +"' WHERE identifiant ='"+request.session.identifiant+"';";
 	}
+	//si le champ image n'est pas vide on prépare la requete de modification de l'image
 	if(image!=undefined)
 	{
 		sql_image = "UPDATE fredouil.users SET avatar = '"+ image +"' WHERE identifiant ='"+request.session.identifiant+"';";
 	}
+	//si le champ mdp n'est pas vide on prépare la requete de modification du mot de passe (en le cryptant bien entendu)
 	if(mdp!=undefined)
 	{
 		sql_mdp = "UPDATE fredouil.users SET motpasse = '"+ sha1(mdp) +"' WHERE identifiant ='"+request.session.identifiant+"';";
@@ -132,6 +118,7 @@ app.post('/profile', (request, response) => {
 		} 
 		else
 		{
+			//si le champ humeur n'est pas vide
 			if(humeur!=undefined){
 				client.query(sql_humeur, (err, result) => {
 					if(err)
@@ -149,6 +136,7 @@ app.post('/profile', (request, response) => {
 					response.send(responseData);
 				})
 			}
+			//si le champ image n'est pas vide
 			else if(image!=undefined){
 				client.query(sql_image, (err, result) => {
 					if(err)
@@ -166,6 +154,7 @@ app.post('/profile', (request, response) => {
 					response.send(responseData);
 				})
 			}
+			//si le champ mdp n'est pas vide
 			else if(mdp!=undefined){
 				client.query(sql_mdp, (err, result) => {
 					if(err)
@@ -183,7 +172,6 @@ app.post('/profile', (request, response) => {
 					response.send(responseData);
 				})
 			}
-			
 			client.release();
 		}
 	});
@@ -191,11 +179,10 @@ app.post('/profile', (request, response) => {
 
 app.get('/profile',(request,response)=>{
 	response.send(responseData);
-
 });
 
 app.get('/accueil',(request,response)=>{
-	//on récupère les scores totaux par joueur :
+	//on récupère le score total, le pseudo et l'avatar par joueur :
 	sql_scores="select identifiant,avatar, SUM(score) from fredouil.historique join fredouil.users on fredouil.historique.id_user=fredouil.users.id GROUP BY identifiant,avatar order by SUM(score) desc limit 10;";
 	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
 	pool.connect(function(err, client, done) {
@@ -204,15 +191,15 @@ app.get('/accueil',(request,response)=>{
 		} 
 		else
 		{
-			console.log('Les 10 meilleurs scores ont été récupérés avec succès');
+			
 			client.query(sql_scores, (err, result) => {
 				if(err) {
-					// envoi des données
 					response.json();
 					console.log('Erreur , impossible d\'effectuer cette requête' + err.stack);
 				}
 				else {
 					// envoi du top ten
+					console.log('Les 10 meilleurs scores ont été récupérés avec succès');
 					response.json(result.rows);
 				}
 			})
@@ -224,53 +211,51 @@ app.get('/accueil',(request,response)=>{
 
 
 app.get('/quizz', (req, response) => {
-	//console.log('On est dans les quizz');	
 	var MongoClient = mongo.MongoClient;
     MongoClient.connect('mongodb://127.0.0.1:27017', (err, client) => {
-      if (err) 
-	  {
+		if (err) 
+		{
 		throw err;
-	  }
-      var db = client.db('db');
-      
-      db.collection('quizz').distinct('thème', (err, result) => {
-        if (err) 
+		}
+		var mongo = client.db('db'); 
+		mongo.collection('quizz').distinct('thème', (err, result) => {
+		if (err) 
 		{
 			throw err;
 		}
-		//console.log('Valeur de result : '+result);
 		//on retourne les themes :)
-        response.json(result);
-      });
+		response.json(result);
+		});
     });
 });
 
 app.post('/questions' , (req,res)=>{
 	mongo.MongoClient.connect(url,(err, db) => {
-      if(err){
-          throw err ;
-      }
-      var mongo = db.db("db");
+		if(err){
+		throw err ;
+		}
+		var mongo = db.db("db");
+		mongo.collection('quizz').find({'thème':req.body.theme}).toArray((err,result)=>{
+			if (err) {
+				throw err;
+			}
+				min = Math.ceil(1);
+				max = Math.ceil(30);
+				// On renvoie un nombre entier aléatoire entre une valeur min et une valeur max , ici entre 1 et 29 (30 est exclu)
+				// Cette façon de faire a été tirée du site suivant : https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+				const index = Math.floor(Math.random() * max-min)+min  ;
 
-      mongo.collection('quizz').find({'thème':req.body.theme}).toArray((err,result)=>{
-    
-     if (err) throw err;
-            min = Math.ceil(1);
-			max = Math.ceil(30);
-            //max = Math.floor(30);
-			// On renvoie un nombre entier aléatoire entre une valeur min et une valeur max , ici entre 1 et 29 (30 est exclu)
-            const index = Math.floor(Math.random() * max-min)+min  ;
-            //console.log( result[0].quizz); //affichage des questions du theme choisi + la/les réponses
-			//tableau contenant les questions, dans un ordre aléatoire
-            var array = [ result[0].quizz[index] , result[0].quizz[index+1] , result[0].quizz[index+2] , result[0].quizz[index+3] , result[0].quizz[index+4],  result[0].quizz[index+5],  result[0].quizz[index+6], result[0].quizz[index+7], result[0].quizz[index+8], result[0].quizz[index+9], result[0].quizz[index+10], result[0].quizz[index+11], result[0].quizz[index+12], result[0].quizz[index+13], result[0].quizz[index+14], result[0].quizz[index+15], result[0].quizz[index+16], result[0].quizz[index+17], result[0].quizz[index+18], result[0].quizz[index+19], result[0].quizz[index+20], result[0].quizz[index+21], result[0].quizz[index+22], result[0].quizz[index+23], result[0].quizz[index+24], result[0].quizz[index+25], result[0].quizz[index+26], result[0].quizz[index+27], result[0].quizz[index+28], result[0].quizz[index+29]];
-	        res.send( array);
-        db.close();
-      }); 
+				//tableau contenant les questions, dans un ordre aléatoire
+				var array = [ result[0].quizz[index] , result[0].quizz[index+1] , result[0].quizz[index+2] , result[0].quizz[index+3] , result[0].quizz[index+4],  result[0].quizz[index+5],  result[0].quizz[index+6], result[0].quizz[index+7], result[0].quizz[index+8], result[0].quizz[index+9], result[0].quizz[index+10], result[0].quizz[index+11], result[0].quizz[index+12], result[0].quizz[index+13], result[0].quizz[index+14], result[0].quizz[index+15], result[0].quizz[index+16], result[0].quizz[index+17], result[0].quizz[index+18], result[0].quizz[index+19], result[0].quizz[index+20], result[0].quizz[index+21], result[0].quizz[index+22], result[0].quizz[index+23], result[0].quizz[index+24], result[0].quizz[index+25], result[0].quizz[index+26], result[0].quizz[index+27], result[0].quizz[index+28], result[0].quizz[index+29]];
+				res.send( array);
+			db.close();
+		}); 
     });
 }) ;
 
 app.get('/historique', (request,response) =>{
 
+	//On récupère l'historique du joueur connecté, avec les parties classées par ordre décroissant
 	sql_historique="select date_jeu, niveau_jeu, nb_reponses_corr,temps,score from fredouil.historique join fredouil.users on fredouil.historique.id_user=fredouil.users.id where identifiant ='"+request.session.identifiant+"'order by fredouil.historique.id desc ;";
 	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
 	pool.connect(function(err, client, done) {
@@ -279,7 +264,6 @@ app.get('/historique', (request,response) =>{
 		} 
 		else
 		{
-			console.log('L\'historique du joueur a été récupéré !');
 			client.query(sql_historique, (err, result) => {
 				if(err) {
 					// envoi des données
@@ -288,6 +272,7 @@ app.get('/historique', (request,response) =>{
 				}
 				else {
 					//console.log(result.rows);
+					console.log('L\'historique du joueur a été récupéré !');
 					// envoi de l'historique
 					response.json(result.rows);
 				}
@@ -298,7 +283,7 @@ app.get('/historique', (request,response) =>{
 });
 
 app.post('/ajoutPartie', (request, response) => {
-	id=responseData.data.id;
+	id=request.session.user_id;
 	var date= request.body.date_jeu;
 	var difficulte = request.body.difficulte;
 	var nb_reponses_justes = request.body.bonnes_rep;
@@ -316,7 +301,7 @@ app.post('/ajoutPartie', (request, response) => {
 			client.query(sql_game, (err, result) => {
 				if(err)
 				{
-					console.log('Erreur dans l execution de la requete d\'insertion' + err.stack);
+					console.log('Erreur dans l exécution de la requête d\'insertion' + err.stack);
 					responseData.statusMsg='Impossible d\'ajouter la partie';
 					responseData.data=false;
 				}
@@ -335,6 +320,28 @@ app.post('/ajoutPartie', (request, response) => {
 
 
 app.get('/logout',(request,response) =>{
+	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
+	pool.connect(function(err, client, done) {
+		if(err){
+			console.log('Erreur , impossible de se connecter à la bdd ' + err.stack);
+		} 
+		else
+		{
+			client.query("UPDATE fredouil.users SET statut_connexion = 0 WHERE identifiant ='"+username+"';", (err, result) => {
+				if(err)
+				{
+					console.log('Erreur d’exécution de la requete, impossible de mettre à jour le statut de connexion' + err.stack);
+				}
+				else
+				{
+					console.log('Statut de connexion mis à jour ! ');
+					request.session.statut = 0;	
+				}
+				response.send(responseData);
+			})
+			client.release();
+		}
+	})
 	request.session.destroy();
 	response.send(true);
 });
