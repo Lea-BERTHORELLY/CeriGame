@@ -84,9 +84,6 @@ app.post('/login', (request, response) => {
 					request.session.nom = result.rows[0].nom;
 					request.session.prenom = result.rows[0].prenom;
 					request.session.date_de_naissance = result.rows[0].date_naissance;
-					//console.log('Connexion réussie : bienvenue utilisateur '+ username);
-					//console.log('Etat connexion: '+result.rows[0].statut_connexion);
-					//console.log('Youhou vous êtes connecté !');
 					client.query("UPDATE fredouil.users SET statut_connexion = 1 WHERE identifiant ='"+username+"';",(err,result)=> {
 						if(err){
 							console.log('Erreur d’exécution de la requete, impossible de mettre à jour' + err.stack);
@@ -97,19 +94,11 @@ app.post('/login', (request, response) => {
 							//console.log("affichage de l identifiant : "+request.session.identifiant);			   
 
 					});
-
-					//response.sendFile( __dirname  + '/accueil.component.html'); 
 				}
 				else{
-					//console.log('Connexion échouée : informations de connexion incorrectes');
 					responseData.statusMsg='Connexion échouée : informations de connexion incorrectes';
-					//responseData.data=false;
-					
-
 				}
-				//console.log(user);
 				response.send(responseData);
-				//response.send(user);
 			});
 			client.release(); 
 		}
@@ -201,8 +190,6 @@ app.post('/profile', (request, response) => {
 });
 
 app.get('/profile',(request,response)=>{
-	//sqlFetch = "SELECT * FROM fredouil.users where identifiant='"+request.session.identifiant+"';";
-	//console.log(responseData.data.prenom);
 	response.send(responseData);
 
 });
@@ -275,7 +262,7 @@ app.post('/getQuestions' , (req,res)=>{
             max = Math.floor(30);
             const index = Math.floor(Math.random() * max-min)+min  ;
             //console.log( result[0].quizz); //affichage des questions du theme choisi + la/les réponses
-            var array = [ result[0].quizz[index] , result[0].quizz[index+1] , result[0].quizz[index+2] , result[0].quizz[index+3] , result[0].quizz[index+4]];
+            var array = [ result[0].quizz[index] , result[0].quizz[index+1] , result[0].quizz[index+2] , result[0].quizz[index+3] , result[0].quizz[index+4], , result[0].quizz[index+5], , result[0].quizz[index+6], result[0].quizz[index+7], result[0].quizz[index+8], result[0].quizz[index+9], result[0].quizz[index+10], result[0].quizz[index+11], result[0].quizz[index+12], result[0].quizz[index+13], result[0].quizz[index+14], result[0].quizz[index+15], result[0].quizz[index+16], result[0].quizz[index+17], result[0].quizz[index+18], result[0].quizz[index+19], result[0].quizz[index+20], result[0].quizz[index+21], result[0].quizz[index+22], result[0].quizz[index+23], result[0].quizz[index+24], result[0].quizz[index+25], result[0].quizz[index+26], result[0].quizz[index+27], result[0].quizz[index+28], result[0].quizz[index+29]];
 	        res.send( array);
         db.close();
       }); 
@@ -310,6 +297,44 @@ app.get('/historique', (request,response) =>{
 	});
 });
 
+app.post('/ajoutPartie', (request, response) => {
+	id=responseData.data.id;
+	var date= request.body.date_jeu;
+	var difficulte = request.body.difficulte;
+	var nb_reponses_justes = request.body.bonnes_rep;
+	var tps_total = request.body.temps;
+	var score = request.body.score;
+	console.log('id : '+id+' date : '+date+' difficulté : '+difficulte+' bonnes réponses : '+nb_reponses_justes+' temps : '+tps_total+' score : '+score);
+	//sql_game = "UPDATE fredouil.historique SET id_user = '"+ id +"',date_jeu='"+date+"',niveau_jeu = '"+difficulte+"',nb_reponses_corr ='"+nb_reponses_justes+"', temps ='"+tps_total+"',score='"+score+"'WHERE identifiant ='"+request.session.identifiant+"';";
+	//sql_game ="INSERT INTO fredouil.historique (id_user, date_jeu, niveau_jeu, nb_reponses_corr, temps, score) VALUES (id, date, difficulte, nb_reponses_justes, tps_total, score);";
+	sql_game =`INSERT INTO fredouil.historique (id_user, date_jeu, niveau_jeu, nb_reponses_corr, temps, score) VALUES ('${id}', '${date}', '${difficulte}', '${nb_reponses_justes}','${tps_total}', '${score}');`;
+	
+	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
+	pool.connect(function(err, client, done) {
+		if(err){
+			console.log('Erreur , impossible de se connecter à la bdd ' + err.stack);
+		} 
+		else
+		{
+			client.query(sql_game, (err, result) => {
+				if(err)
+				{
+					console.log('Erreur dans l execution de la requete d\'insertion' + err.stack);
+					responseData.statusMsg='Impossible d\'ajouter la partie';
+					responseData.data=false;
+				}
+				else
+				{
+					responseData.data=true;
+					responseData.statusMsg='Partie ajoutée !';
+					console.log('Partie ajoutée ! ');
+				}
+				response.send(responseData);
+			})
+			client.release();
+		}
+	})
+});
 
 
 app.get('/logout',(request,response) =>{

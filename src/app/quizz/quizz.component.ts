@@ -13,6 +13,7 @@ import { QuizzService } from '../services/quizz.service';
 export class QuizzComponent implements OnInit {
 
   bandeau : BandeauService;
+  date!:any;
   showThemes = true;
   choixDiff!:boolean;
   choixTheme!:boolean;
@@ -24,8 +25,8 @@ export class QuizzComponent implements OnInit {
   difficulte!:any;
   score: number=0;
 
-  tps_par_question!: number; //temps mis pour répondre à une question
-  tps_total!: number; //temps mis pour faire tout le quizz
+  tps_par_question: number=0; //temps mis pour répondre à une question
+  tps_total: number=0; //temps mis pour faire tout le quizz
 
   nb_questions: number=0; //nombre de questions déjà passées
   nb_reponses_justes: any=0; //nombre de bonnes réponses
@@ -51,10 +52,10 @@ export class QuizzComponent implements OnInit {
     if(difficulte == "facile"){
       this.difficulte = 1;
     }
-    else if(difficulte == "intermédiaire"){
+    else if(difficulte == "moyen"){
       this.difficulte = 2;
     }
-    else{
+    else if(difficulte == "difficile"){
       this.difficulte = 3;
     }
     this.choixDiff=false;
@@ -105,53 +106,20 @@ export class QuizzComponent implements OnInit {
     }
 
     //this.reponses_choisies[this.nb_questions]=proposition; //on stocke le choix dans le tableau des réponses choisies
-    if(this.nb_questions==10){ //nombre de questions auxquelles on doit répondre
-      this.bandeau.bandeauInfo = "Quizz terminé ! Votre score est de "+ this.score+" !";
-      this.router.navigate(['accueil']);
+    if(this.nb_questions==5){ 
+      this.bandeau.bandeauInfo = "Quizz terminé  ! Votre score est de "+ this.score+" !";
+      //this.router.navigate(['accueil']);
+      this.AddGame();
     }
+    
     //this.bandeau.bandeauInfo = "Réponse : "+ this.reponse +" nb question : "+this.nb_questions;
   }
 
-
-  /*@Input()
-  themes!: string[];
-  @Input() name!: string;
-
-  @Output('selectedTheme')
-  sendSelectedThemeEmitter: EventEmitter<string> = new EventEmitter<string>();
-
-  constructor() { }
-
-  ngOnInit(): void {}
-
-  onThemeSelected = (theme: string) : void => {
-    this.sendSelectedThemeEmitter.emit(theme);
+  AddGame(){
+    this.date=new Date().toDateString();
+    this.quizzService.addGame(this.date,this.difficulte,this.nb_reponses_justes,this.tps_total,this.score).subscribe((data: any)=>{
+      this.router.navigate(['accueil']);
+    })
   }
-  select() : void {
-    console.log(this.name + ' clicked');
-    
-    this.sendSelectedThemeEmitter.emit(this.name);
-  }*/
-
-
-  /*liste_de_themes!: any[];
-
-  constructor(private quizz: QuizzService) { }
-
-  ngOnInit(): void {
-    this.getTheThemes();
-  }
-  
-  getTheThemes(){
-    this.quizz.getThemes().subscribe(
-      response => {
-        this.liste_de_themes = response;
-        console.log(this.liste_de_themes);
-      },
-      error => {
-        console.log("Erreur: thèmes non récupérés");
-      }
-    )
-  }*/
 
 }

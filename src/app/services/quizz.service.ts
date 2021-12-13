@@ -20,4 +20,8 @@ export class QuizzService {
     return this.http.post(`http://pedago.univ-avignon.fr:3115/getQuestions`, {theme});
   }
 
+  addGame(date_jeu:number,difficulte: number, bonnes_rep: number, temps: number, score: number){
+    return this.http.post('http://pedago.univ-avignon.fr:3115/ajoutPartie', { date_jeu, difficulte, bonnes_rep, temps, score });
+  }
+
 }
