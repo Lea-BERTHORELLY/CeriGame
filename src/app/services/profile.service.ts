@@ -22,5 +22,8 @@ export class ProfileService {
     return this.http.get(`http://pedago.univ-avignon.fr:3115/historique`);
   }
 
+  Logout(){
+    return this.http.get(`http://pedago.univ-avignon.fr:3115/logout`);
+  }
 
 }

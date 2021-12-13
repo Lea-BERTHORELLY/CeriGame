@@ -320,6 +320,8 @@ app.post('/ajoutPartie', (request, response) => {
 
 
 app.get('/logout',(request,response) =>{
+	//console.log('identifiant: '+request.session.identifiant);
+	var identifiant = request.session.identifiant;
 	var pool = new pgClient.Pool({user: 'uapv1901437', host: '127.0.0.1', database: 'etd', password: 's0XNdu', port: 5432 });
 	pool.connect(function(err, client, done) {
 		if(err){
@@ -327,7 +329,8 @@ app.get('/logout',(request,response) =>{
 		} 
 		else
 		{
-			client.query("UPDATE fredouil.users SET statut_connexion = 0 WHERE identifiant ='"+username+"';", (err, result) => {
+			
+			client.query("UPDATE fredouil.users SET statut_connexion = 0 WHERE identifiant ='"+identifiant+"';", (err, result) => {
 				if(err)
 				{
 					console.log('Erreur d’exécution de la requete, impossible de mettre à jour le statut de connexion' + err.stack);
@@ -335,7 +338,7 @@ app.get('/logout',(request,response) =>{
 				else
 				{
 					console.log('Statut de connexion mis à jour ! ');
-					request.session.statut = 0;	
+					responseData.statusMsg='Vous êtes déconnecté';
 				}
 				response.send(responseData);
 			})
@@ -343,5 +346,5 @@ app.get('/logout',(request,response) =>{
 		}
 	})
 	request.session.destroy();
-	response.send(true);
+	//response.send(true);
 });

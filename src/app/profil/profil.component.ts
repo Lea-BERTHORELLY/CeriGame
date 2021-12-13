@@ -61,18 +61,17 @@ export class ProfilComponent implements OnInit {
 
   GetProfile(){
     this.profile.GetProfile().subscribe((data: any)=>{
-      //this.nom= data.data.nom;      
-      /*this.prenom= data.data.prenom;
-      this.imageProfil= data.data.image;
-      this.humeurActuelle= data.data.humeur;*/
-      
       this.nom= localStorage.getItem("nom");
       this.prenom= localStorage.getItem("prenom");
       this.imageProfil= localStorage.getItem("image");
       this.humeurActuelle= localStorage.getItem("humeur");
       //this.bandeau.bandeauInfo = "Bienvenue sur votre profil "+this.nom+" ! ";
-    }
-    )
+    })
+  }
+
+  Logout(){
+    this.bandeau.bandeauInfo = "Vous êtes déconnecté";
+    this.profile.Logout().subscribe();
   }
 
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../services/profile.service';
+import { BandeauService } from '../services';
 
 @Component({
   selector: 'app-historique',
@@ -11,7 +12,7 @@ export class HistoriqueComponent implements OnInit {
   historique!: any[];
   username!: string;
 
-  constructor(private profile: ProfileService) { }
+  constructor(private profile: ProfileService,private bandeau: BandeauService) { }
 
   ngOnInit(): void {
     this.getHisto();
@@ -29,6 +30,11 @@ export class HistoriqueComponent implements OnInit {
         console.log("Erreur: historique non récupéré");
       }
     )
+  }
+
+  Logout(){
+    this.bandeau.bandeauInfo = "Vous êtes déconnecté";
+    this.profile.Logout().subscribe();
   }
 
 }

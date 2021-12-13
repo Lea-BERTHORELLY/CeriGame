@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BandeauService } from '../services/bandeau.service';
 import { QuizzService } from '../services/quizz.service';
+import { ProfileService } from '../services';
 
 @Component({
   selector: 'app-quizz',
@@ -36,7 +37,7 @@ export class QuizzComponent implements OnInit {
 
   bonneReponse : string = "";
 
-  constructor(public quizzService : QuizzService ,  private router : Router,_bandeau : BandeauService) { 
+  constructor(public quizzService : QuizzService ,  private router : Router,_bandeau : BandeauService,private profile : ProfileService) { 
     this.bandeau=_bandeau;
   }
 
@@ -130,6 +131,11 @@ export class QuizzComponent implements OnInit {
     this.quizzService.addGame(this.date,this.difficulte,this.nb_reponses_justes,this.tps_total,this.score).subscribe((data: any)=>{
       this.router.navigate(['accueil']);
     })
+  }
+
+  Logout(){
+    this.bandeau.bandeauInfo = "Vous êtes déconnecté";
+    this.profile.Logout().subscribe();
   }
 
 }

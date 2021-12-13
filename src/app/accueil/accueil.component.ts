@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TopTenService } from '../services/top-ten.service';
+import { ProfileService } from '../services';
+import { BandeauService } from '../services';
 
 
 @Component({
@@ -11,7 +13,7 @@ export class AccueilComponent implements OnInit {
 
   top_ten!: any[];
 
-  constructor(private topten: TopTenService) { }
+  constructor(private topten: TopTenService, private profile: ProfileService, private bandeau: BandeauService) { }
 
   ngOnInit(): void {
     this.getTheTopTen();
@@ -27,6 +29,12 @@ export class AccueilComponent implements OnInit {
         console.log("Erreur: classement non récupéré");
       }
     )
+  }
+
+  Logout(){
+    this.bandeau.bandeauInfo = "Vous êtes déconnecté";
+    this.profile.Logout().subscribe();
+    
   }
 
 }
