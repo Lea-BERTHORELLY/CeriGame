@@ -26,7 +26,9 @@ export class QuizzComponent implements OnInit {
   difficulte!:any;
   score: number=0;
 
+  timer: any;
   tps_total: number=0; //temps mis pour faire tout le quizz
+ //temps mis pour faire tout le quizz
 
   nb_questions: number=0; //nombre de questions déjà passées
   nb_reponses_justes: any=0; //nombre de bonnes réponses
@@ -73,14 +75,19 @@ export class QuizzComponent implements OnInit {
 
 
   selectTheme(event: Event ){
-      this.theme= (event.target as HTMLInputElement).value;
-      this.quizzService.getQuestions(this.theme).subscribe((response : any) =>{
-        this.quizz = response;
-        this.showThemes = false; 
-      },(error: any) =>{
-        console.log('Error is : ' , error);
+    this.theme= (event.target as HTMLInputElement).value;
+    this.quizzService.getQuestions(this.theme).subscribe((response : any) =>{
+      this.quizz = response;
+      this.showThemes = false; 
+    },
+    (error: any) =>{
+      console.log('Error is : ' , error);
     })
    
+    this.timer = setInterval(() => {
+      this.tps_total ++;
+    },1000);
+
   }
 
 
@@ -89,7 +96,7 @@ export class QuizzComponent implements OnInit {
   choix(proposition : string){
     this.bonneReponse = this.quizz[this.nb_questions].réponse;
     if(proposition == this.bonneReponse){
-      this.score += 100*(this.difficulte);
+      this.score += 1000*(this.difficulte);
       //this.reponses_justes[this.nb_questions].push(proposition);
       this.nb_reponses_justes++;
       this.bandeau.bandeauInfo = "Réponse juste ! Votre score passe à  "+ this.score;
@@ -97,33 +104,38 @@ export class QuizzComponent implements OnInit {
     
     }
     else{
-      this.score -=20*(this.difficulte);
+      this.score -=200*(this.difficulte);
       this.bandeau.bandeauInfo = "Réponse fausse ! Votre score passe à  "+ this.score;
       this.nb_questions++;
     }
 
     if(this.difficulte==1){ 
       if(this.nb_questions==5){
-        this.bandeau.bandeauInfo = "Quizz terminé en mode facile ! Votre score est de "+ this.score+" !";
+        
         this.AddGame();
+        this.bandeau.bandeauInfo = "Quizz terminé en mode facile ! Votre score est de "+ this.score+" !";
       }
     }
     if(this.difficulte==2){ 
       if(this.nb_questions==10){
-        this.bandeau.bandeauInfo = "Quizz terminé en mode intermédiaire ! Votre score est de "+ this.score+" !";
+        
         this.AddGame();
+        this.bandeau.bandeauInfo = "Quizz terminé en mode intermédiaire ! Votre score est de "+ this.score+" !";
       }
     }
     if(this.difficulte==3){ 
       if(this.nb_questions==15){
-        this.bandeau.bandeauInfo = "Quizz terminé en mode difficile ! Votre score est de "+ this.score+" !";
+        
         this.AddGame();
+        this.bandeau.bandeauInfo = "Quizz terminé en mode difficile ! Votre score est de "+ this.score+" !";
       }
     }
   }
 
   AddGame(){
+    clearInterval(this.timer); 
     this.date=new Date().toDateString();
+    this.score=Math.ceil(this.score/this.tps_total);
     this.quizzService.addGame(this.date,this.difficulte,this.nb_reponses_justes,this.tps_total,this.score).subscribe((data: any)=>{
       this.router.navigate(['accueil']);
     })
