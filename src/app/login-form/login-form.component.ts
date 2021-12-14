@@ -3,8 +3,8 @@ import { Input } from '@angular/core';
 import { FormBuilder,FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthentificationService } from '../services/authentification.service';
-import { BandeauComponent } from '../bandeau/bandeau.component';
 import { BandeauService } from '../services/bandeau.service';
+import { WebSocketService } from '../services/web-socket.service';
 
 @Component({
   selector: 'app-login-form',
@@ -21,7 +21,7 @@ export class LoginFormComponent implements OnInit {
   auth:AuthentificationService;
   router: Router;
   bandeau : BandeauService;
-  constructor( _auth : AuthentificationService, _router : Router, _bandeau : BandeauService) { 
+  constructor( _auth : AuthentificationService, _router : Router, _bandeau : BandeauService,private websocket: WebSocketService) { 
     this.auth=_auth;
     this.router=_router;
     this.bandeau=_bandeau;
@@ -57,6 +57,7 @@ export class LoginFormComponent implements OnInit {
             localStorage.setItem("image",data.data.image);
             localStorage.setItem("humeur",data.data.humeur);
           }
+          this.websocket.emit('Connexion de : ',formConnex.form.value.username);
           this.router.navigate(['accueil']);
         }
         else {
