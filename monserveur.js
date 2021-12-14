@@ -239,14 +239,8 @@ app.post('/questions' , (req,res)=>{
 			if (err) {
 				throw err;
 			}
-				min = Math.ceil(1);
-				max = Math.ceil(30);
-				// On renvoie un nombre entier aléatoire entre une valeur min et une valeur max , ici entre 1 et 29 (30 est exclu)
-				// Cette façon de faire a été tirée du site suivant : https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-				const index = Math.floor(Math.random() * max-min)+min  ;
-
-				//tableau contenant les questions, dans un ordre aléatoire
-				var array = [ result[0].quizz[index] , result[0].quizz[index+1] , result[0].quizz[index+2] , result[0].quizz[index+3] , result[0].quizz[index+4],  result[0].quizz[index+5],  result[0].quizz[index+6], result[0].quizz[index+7], result[0].quizz[index+8], result[0].quizz[index+9], result[0].quizz[index+10], result[0].quizz[index+11], result[0].quizz[index+12], result[0].quizz[index+13], result[0].quizz[index+14], result[0].quizz[index+15], result[0].quizz[index+16], result[0].quizz[index+17], result[0].quizz[index+18], result[0].quizz[index+19], result[0].quizz[index+20], result[0].quizz[index+21], result[0].quizz[index+22], result[0].quizz[index+23], result[0].quizz[index+24], result[0].quizz[index+25], result[0].quizz[index+26], result[0].quizz[index+27], result[0].quizz[index+28], result[0].quizz[index+29]];
+				//console.log(result[0]);
+				var array = [ result[0].quizz[0] , result[0].quizz[1] , result[0].quizz[2] , result[0].quizz[3] , result[0].quizz[4],  result[0].quizz[5],  result[0].quizz[6], result[0].quizz[7], result[0].quizz[8], result[0].quizz[9], result[0].quizz[10], result[0].quizz[11], result[0].quizz[12], result[0].quizz[13], result[0].quizz[14], result[0].quizz[15], result[0].quizz[16], result[0].quizz[17], result[0].quizz[18], result[0].quizz[19], result[0].quizz[20], result[0].quizz[21], result[0].quizz[22], result[0].quizz[23], result[0].quizz[24], result[0].quizz[25], result[0].quizz[26], result[0].quizz[27], result[0].quizz[28], result[0].quizz[29]];
 				res.send( array);
 			db.close();
 		}); 

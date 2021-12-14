@@ -18,12 +18,12 @@ justify-content: center;
 <body class="w3-light-grey">
 
 <!-- Navbar -->
-<div class="w3-bar w3-teal w3-hide-small">
+<div class="w3-bar w3-teal">
   <button routerLink="/accueil" class="w3-bar-item w3-button w3-padding-large w3-hover-white">Accueil</button>
-  <button routerLink="/profile" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Profil</button>
-  <button routerLink="/historique" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Historique</button>
-  <button routerLink="/quizz" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Quizz</button>
-  <button routerLink="" (click)="Logout()" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" >Déconnexion</button>
+  <button routerLink="/profile" class="w3-bar-item w3-button w3-padding-large w3-hover-white">Profil</button>
+  <button routerLink="/historique" class="w3-bar-item w3-button w3-padding-large w3-hover-white">Historique</button>
+  <button routerLink="/quizz" class="w3-bar-item w3-button w3-padding-large w3-hover-white">Quizz</button>
+  <button routerLink="" (click)="Logout()" class="w3-bar-item w3-button w3-padding-large w3-hover-white" >Déconnexion</button>
 </div>
 
 <!-- Header -->
@@ -32,18 +32,6 @@ justify-content: center;
   <h2 class="w3-margin w3-jumbo">Top Ten</h2>
   </header>
 
-
-<script>
-// Used to toggle the menu on small screens when clicking on the menu button
-function myFunction() {
-  var x = document.getElementById("navDemo");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-</script>
 
 <div class="w3-container w3-card-4">
   <p *ngIf="top_ten?.length == 0" ><i>Aucun joueur dans le top ten</i></p>
